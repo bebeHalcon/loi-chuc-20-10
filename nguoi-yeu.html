@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#f5dfe1" />
+    <title>Gửi người yêu · 20/10</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Be Vietnam Pro", "Segoe UI", sans-serif;
+        color: #573f3e;
+        background: #f4e7df;
+      }
+      .scene {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background:
+          radial-gradient(ellipse at 12% 10%, #fff8eb, transparent 36%),
+          radial-gradient(ellipse at 90% 90%, #e7cbd1, transparent 35%),
+          linear-gradient(135deg, #f8e7df, #efdae0 55%, #f6e9dd);
+        overflow: hidden;
+        position: relative;
+      }
+      .scene:before,
+      .scene:after {
+        content: "✿";
+        position: absolute;
+        font-size: 150px;
+        color: #d5ad9c;
+        opacity: 0.4;
+        pointer-events: none;
+      }
+      .scene:before {
+        top: -45px;
+        left: 3%;
+      }
+      .scene:after {
+        content: "❀";
+        right: 3%;
+        bottom: -54px;
+        font-size: 190px;
+      }
+      .app {
+        width: min(900px, 100%);
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        overflow: hidden;
+        border: 1px solid #fff9f0;
+        border-radius: 25px;
+        background: #fffaf4e8;
+        box-shadow: 0 28px 80px #79565725;
+        position: relative;
+        z-index: 1;
+      }
+      .art {
+        min-height: 570px;
+        display: grid;
+        place-items: center;
+        padding: 32px;
+        background: linear-gradient(155deg, #f2d4d8, #f8e5d7 54%, #e9dbd1);
+        position: relative;
+      }
+      .art:before,
+      .art:after {
+        content: "";
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border: 1px solid #fffaf285;
+        border-radius: 50%;
+      }
+      .art:after {
+        width: 380px;
+        height: 380px;
+      }
+      .caption {
+        position: absolute;
+        top: 23px;
+        left: 25px;
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        color: #936e69;
+        font-weight: 600;
+      }
+      .foot {
+        position: absolute;
+        bottom: 22px;
+        font-size: 10px;
+        letter-spacing: 0.09em;
+        color: #8b6864;
+      }
+      .flower {
+        width: min(285px, 90%);
+        position: relative;
+        z-index: 1;
+        filter: drop-shadow(0 12px 10px #8e64602a);
+      }
+      .panel {
+        padding: 48px clamp(30px, 6vw, 68px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        font-size: 10px;
+        font-weight: 700;
+        color: #b96773;
+        margin: 0 0 13px;
+      }
+      h1,
+      h2 {
+        font-family: "DM Serif Display", Georgia, serif;
+        font-weight: 400;
+      }
+      h1 {
+        font-size: clamp(38px, 4.8vw, 55px);
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+        margin: 0;
+      }
+      h1 em {
+        color: #d77884;
+        font-weight: 400;
+      }
+      .intro {
+        font-size: 12px;
+        line-height: 1.85;
+        color: #9a7776;
+        margin: 13px 0 18px;
+      }
+      .back {
+        align-self: flex-start;
+        border: 0;
+        background: none;
+        padding: 0;
+        margin: 0 0 25px;
+        color: #a47e7c;
+        font-size: 11px;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .back:hover {
+        color: #b95d6c;
+      }
+      .pin-view,
+      .letter-view {
+        display: none;
+        animation: arrive 0.45s ease both;
+      }
+      .pin-view.active,
+      .letter-view.active {
+        display: block;
+      }
+      .dots {
+        display: flex;
+        justify-content: center;
+        gap: 14px;
+        margin: 18px 0 21px;
+      }
+      .dot {
+        width: 12px;
+        height: 12px;
+        border: 1.5px solid #d6b2ae;
+        border-radius: 50%;
+        transition: all 0.18s;
+      }
+      .dot.filled {
+        background: #d77884;
+        border-color: #d77884;
+        transform: scale(1.1);
+        box-shadow: 0 0 0 4px #d778841b;
+      }
+      .keypad {
+        width: min(252px, 100%);
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+      .key {
+        min-height: 43px;
+        border: 1px solid #f0e0da;
+        border-radius: 11px;
+        background: #fffdf9;
+        font: inherit;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.16s;
+      }
+      .key:hover,
+      .key:focus-visible {
+        background: #f8e8e5;
+        border-color: #e4c5c3;
+        outline: none;
+        transform: translateY(-1px);
+      }
+      .key.util {
+        font-size: 11px;
+        color: #a17f7a;
+      }
+      .key.zero {
+        grid-column: 2;
+      }
+      .error {
+        min-height: 19px;
+        margin: 10px 0 0;
+        text-align: center;
+        color: #bd6571;
+        font-size: 10px;
+      }
+      .letter {
+        text-align: center;
+      }
+      .stamp {
+        width: 66px;
+        height: 66px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: #f9e7e1;
+        margin: 0 auto 15px;
+        font-size: 28px;
+      }
+      .letter h2 {
+        font-size: 38px;
+        line-height: 1.08;
+        margin: 0;
+      }
+      .letter h2 em {
+        color: #d77884;
+      }
+      .divider {
+        width: 46px;
+        height: 1px;
+        background: #dfb7b0;
+        margin: 20px auto;
+      }
+      .copy {
+        white-space: pre-line;
+        font-size: 11px;
+        line-height: 1.95;
+        color: #806766;
+        margin: 0 auto;
+        max-width: 360px;
+      }
+      .sign {
+        font:
+          italic 19px "DM Serif Display",
+          Georgia,
+          serif;
+        color: #b46f79;
+        margin: 17px 0 0;
+      }
+      .confetti {
+        position: fixed;
+        z-index: 5;
+        top: -14px;
+        width: 8px;
+        height: 11px;
+        pointer-events: none;
+        animation: fall 2.8s linear forwards;
+      }
+      @keyframes arrive {
+        from {
+          opacity: 0;
+          transform: translateY(7px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fall {
+        to {
+          transform: translate3d(var(--drift), 105vh, 0) rotate(600deg);
+          opacity: 0;
+        }
+      }
+      @media (max-width: 650px) {
+        .scene {
+          padding: 14px;
+          min-height: 100svh;
+        }
+        .app {
+          grid-template-columns: 1fr;
+          width: min(460px, 100%);
+          border-radius: 21px;
+        }
+        .art {
+          min-height: 195px;
+          padding: 18px;
+        }
+        .art:before {
+          width: 165px;
+          height: 165px;
+        }
+        .art:after {
+          width: 215px;
+          height: 215px;
+        }
+        .flower {
+          width: 160px;
+        }
+        .caption {
+          top: 14px;
+          left: 17px;
+          font-size: 9px;
+        }
+        .foot {
+          bottom: 11px;
+          font-size: 9px;
+        }
+        .panel {
+          padding: 25px 24px 27px;
+        }
+        .eyebrow {
+          margin-bottom: 10px;
+        }
+        .intro {
+          margin: 10px 0 13px;
+        }
+        .back {
+          margin-bottom: 17px;
+        }
+        .key {
+          min-height: 40px;
+        }
+        .letter h2 {
+          font-size: 34px;
+        }
+        .copy {
+          font-size: 10px;
+        }
+      }
+      .album-link {
+        display: inline-block;
+        margin-top: 22px;
+        padding: 12px 18px;
+        border-radius: 99px;
+        background: #d77884;
+        color: #fff;
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: 600;
+        box-shadow: 0 7px 18px #d7788433;
+        transition:
+          transform 0.2s,
+          background 0.2s;
+      }
+      .album-link:hover {
+        transform: translateY(-2px);
+        background: #b95d6c;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="scene">
+      <section class="app">
+        <aside class="art">
+          <div class="caption">DÀNH RIÊNG CHO EM · 20.10</div>
+          <svg
+            class="flower"
+            viewBox="0 0 300 340"
+            role="img"
+            aria-label="Bông hoa hồng dịu dàng"
+          >
+            <defs>
+              <linearGradient id="p" x1="0" x2="1" y1="0" y2="1">
+                <stop stop-color="#fff4e5" />
+                <stop offset="1" stop-color="#dc8891" />
+              </linearGradient>
+              <linearGradient id="l" x1="0" x2="1">
+                <stop stop-color="#b6c0a0" />
+                <stop offset="1" stop-color="#71846e" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M151 173 C151 228 146 281 153 319"
+              fill="none"
+              stroke="#71846e"
+              stroke-width="8"
+              stroke-linecap="round"
+            />
+            <path
+              d="M149 249 C106 218 84 231 91 257 C112 274 132 268 149 249Z"
+              fill="url(#l)"
+            />
+            <path
+              d="M153 280 C188 246 214 254 210 279 C195 297 174 296 153 280Z"
+              fill="url(#l)"
+            />
+            <g fill="url(#p)" stroke="#be7e7c" stroke-width="2">
+              <ellipse cx="150" cy="83" rx="26" ry="58" />
+              <ellipse
+                cx="150"
+                cy="83"
+                rx="26"
+                ry="58"
+                transform="rotate(45 150 120)"
+              />
+              <ellipse
+                cx="150"
+                cy="83"
+                rx="26"
+                ry="58"
+                transform="rotate(90 150 120)"
+              />
+              <ellipse
+                cx="150"
+                cy="83"
+                rx="26"
+                ry="58"
+                transform="rotate(135 150 120)"
+              />
+              <ellipse
+                cx="150"
+                cy="83"
+                rx="26"
+                ry="58"
+                transform="rotate(180 150 120)"
+              />
+              <ellipse
+                cx="150"
+                cy="83"
+                rx="26"
+                ry="58"
+                transform="rotate(225 150 120)"
+              />
+              <ellipse
+                cx="150"
+                cy="83"
+                rx="26"
+                ry="58"
+                transform="rotate(270 150 120)"
+              />
+              <ellipse
+                cx="150"
+                cy="83"
+                rx="26"
+                ry="58"
+                transform="rotate(315 150 120)"
+              />
+            </g>
+            <circle
+              cx="150"
+              cy="120"
+              r="32"
+              fill="#e9bd71"
+              stroke="#b78654"
+              stroke-width="2"
+            />
+            <circle cx="139" cy="114" r="3" fill="#765647" />
+            <circle cx="161" cy="114" r="3" fill="#765647" />
+            <path
+              d="M143 128 Q150 134 157 128"
+              fill="none"
+              stroke="#765647"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+            <text x="211" y="88" fill="#bf7782" font-size="25">♡</text>
+          </svg>
+          <div class="foot">em luôn là điều dịu dàng nhất ♡</div>
+        </aside>
+        <div class="panel">
+          <div class="back">Món quà riêng dành cho em ♡</div>
+          <section class="pin-view active" id="pin-view">
+            <p class="eyebrow">Mật mã bí mật</p>
+            <h1>Dành cho<br /><em>người anh thương</em></h1>
+            <p class="intro">Bốn con số đặc biệt sẽ mở món quà nhỏ này ♡</p>
+            <div class="dots" aria-label="Mật mã gồm bốn chữ số">
+              <span class="dot"></span><span class="dot"></span
+              ><span class="dot"></span><span class="dot"></span>
+            </div>
+            <div class="keypad" aria-label="Bàn phím nhập mật mã">
+              <button class="key" data-digit="1">1</button
+              ><button class="key" data-digit="2">2</button
+              ><button class="key" data-digit="3">3</button
+              ><button class="key" data-digit="4">4</button
+              ><button class="key" data-digit="5">5</button
+              ><button class="key" data-digit="6">6</button
+              ><button class="key" data-digit="7">7</button
+              ><button class="key" data-digit="8">8</button
+              ><button class="key" data-digit="9">9</button
+              ><button class="key util" data-action="clear">Xóa</button
+              ><button class="key zero" data-digit="0">0</button
+              ><button
+                class="key util"
+                data-action="backspace"
+                aria-label="Xóa số cuối"
+              >
+                ⌫
+              </button>
+            </div>
+            <p class="error" id="error" aria-live="polite"></p>
+          </section>
+          <section class="letter-view" id="letter-view">
+            <div class="letter">
+              <div class="stamp">💌</div>
+              <p class="eyebrow">20 · 10 · Gửi người anh thương</p>
+              <h2>Gửi em<br /><em>thương</em></h2>
+              <div class="divider"></div>
+              <p class="copy">
+                Cảm ơn em vì đã làm những ngày bình thường của anh trở nên đặc
+                biệt hơn, bằng nụ cười, sự dịu dàng và cách em luôn là chính
+                mình. Chúc cô gái anh thương luôn rạng rỡ, tự tin và nhận được
+                thật nhiều điều ngọt ngào — hôm nay và mỗi ngày sau nữa. Anh
+                luôn ở đây cổ vũ cho em.
+              </p>
+              <p class="sign">Thương em thật nhiều ♡</p>
+              <a class="album-link" href="nguoi-yeu-album.html"
+                >Xem album ảnh &nbsp;↗</a
+              >
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+    <script>
+      (() => {
+        let pin = "";
+        const dots = [...document.querySelectorAll(".dot")],
+          view = document.getElementById("pin-view"),
+          letter = document.getElementById("letter-view"),
+          error = document.getElementById("error");
+        function paint() {
+          dots.forEach((d, i) => d.classList.toggle("filled", i < pin.length));
+        }
+        function unlock() {
+          if (pin === "2010" || pin === "2404" || pin === "1403") {
+            view.classList.remove("active");
+            letter.classList.add("active");
+            confetti();
+          } else {
+            error.textContent = "Mật mã chưa đúng rồi, thử lại nhé ♡";
+            pin = "";
+            paint();
+          }
+        }
+        function confetti() {
+          const colors = [
+            "#d77884",
+            "#e8bd83",
+            "#9aa88b",
+            "#f0b2b5",
+            "#b88b73",
+          ];
+          for (let i = 0; i < 32; i++) {
+            const b = document.createElement("i");
+            b.className = "confetti";
+            b.style.left = Math.random() * 100 + "vw";
+            b.style.background = colors[i % colors.length];
+            b.style.borderRadius = i % 2 ? "50%" : "2px";
+            b.style.setProperty("--drift", Math.random() * 140 - 70 + "px");
+            b.style.animationDelay = Math.random() * 0.45 + "s";
+            document.body.append(b);
+            setTimeout(() => b.remove(), 3400);
+          }
+        }
+        document.querySelectorAll("[data-digit]").forEach((b) =>
+          b.addEventListener("click", () => {
+            if (pin.length < 4) {
+              pin += b.dataset.digit;
+              paint();
+              if (pin.length === 4) setTimeout(unlock, 180);
+            }
+          }),
+        );
+        document.querySelector('[data-action="clear"]').onclick = () => {
+          pin = "";
+          paint();
+          error.textContent = "";
+        };
+        document.querySelector('[data-action="backspace"]').onclick = () => {
+          pin = pin.slice(0, -1);
+          paint();
+          error.textContent = "";
+        };
+        document.addEventListener("keydown", (e) => {
+          if (!view.classList.contains("active")) return;
+          if (/^[0-9]$/.test(e.key) && pin.length < 4) {
+            pin += e.key;
+            paint();
+            if (pin.length === 4) setTimeout(unlock, 180);
+          }
+          if (e.key === "Backspace") {
+            pin = pin.slice(0, -1);
+            paint();
+          }
+          if (e.key === "Escape") {
+            pin = "";
+            paint();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
