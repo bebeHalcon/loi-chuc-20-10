@@ -552,17 +552,44 @@
           right = document.getElementById("tap-right");
         let page = 0,
           photos = {};
+        const preloaded = new Set();
         try {
           photos = JSON.parse(localStorage.getItem(key) || "{}");
         } catch {}
+        function preloadNextImages() {
+          for (
+            let index = page + 1;
+            index < Math.min(page + 3, labels.length);
+            index++
+          ) {
+            const source = photos[index] || defaultImages[index];
+            if (
+              !source ||
+              source.startsWith("data:") ||
+              preloaded.has(source)
+            ) {
+              continue;
+            }
+            const image = new Image();
+            image.decoding = "async";
+            image.fetchPriority = "low";
+            image.src = source;
+            preloaded.add(source);
+          }
+        }
+        img.addEventListener("load", preloadNextImages);
         function render() {
           caption.textContent = labels[page];
           frameLabel.textContent = labels[page];
           count.textContent = "TRANG " + (page + 1) + " / " + labels.length;
           const source = photos[page] || defaultImages[page];
           frame.classList.toggle("has-image", Boolean(source));
-          if (source) img.src = source;
-          else img.removeAttribute("src");
+          if (source) {
+            img.fetchPriority = "high";
+            img.src = source;
+          } else {
+            img.removeAttribute("src");
+          }
           left.disabled = page === 0;
           right.disabled = page === labels.length - 1;
         }
