@@ -193,17 +193,14 @@
         font-size: 21px;
       }
       .label {
-        position: absolute;
-        left: 9px;
-        bottom: 9px;
+        display: table;
+        max-width: 100%;
+        margin: 10px auto 0;
         padding: 5px 9px;
         border-radius: 99px;
         background: #fffaf0e8;
         color: #805f5d;
         font-size: 9px;
-      }
-      .slot.has-image .label {
-        background: #fffaf0ed;
       }
       .pager {
         display: flex;
@@ -483,11 +480,7 @@
                 class="placeholder"
                 ><span class="plus">+</span>Chạm giữa ảnh để thêm hoặc thay
                 ảnh<br /><span id="page-caption"></span></span
-              ><img id="photo" alt="Ảnh kỷ niệm" /><span
-                class="label"
-                id="frame-label"
-              ></span
-              ><button
+              ><img id="photo" alt="Ảnh kỷ niệm" /><button
                 class="tap-zone left"
                 id="tap-left"
                 type="button"
@@ -500,6 +493,7 @@
                 aria-label="Chạm bên phải để tới ảnh tiếp theo"
               ></button>
             </div>
+            <span class="label" id="frame-label"></span>
           </div>
           <div class="pager">
             <span class="count" id="count" aria-live="polite"></span>
