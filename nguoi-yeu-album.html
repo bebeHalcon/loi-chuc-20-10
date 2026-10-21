@@ -172,10 +172,11 @@
         display: block;
         position: relative;
         inset: auto;
-        width: auto;
-        height: auto;
+        width: min(100%, 400px);
+        height: 500px;
         max-width: 100%;
-        max-height: 460px;
+        max-height: 500px;
+        object-fit: cover;
       }
       .slot.has-image {
         width: fit-content;
@@ -322,7 +323,9 @@
           max-height: 380px;
         }
         .slot.has-image img {
-          max-height: 380px;
+          width: min(100%, 352px);
+          height: 440px;
+          max-height: 440px;
         }
         .note {
           font-size: 8px;
